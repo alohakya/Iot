@@ -97,6 +97,7 @@ public class Main {
              current = target;
              target.Visited();
              field.getToBeVisitedSensor().remove(target);
+             frame.repaint();
          }
 
          System.out.println("END");
@@ -106,7 +107,7 @@ public class Main {
     }
 
     public static Sensor goLeftUp(Sensor sensor){
-        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index()-1, sensor);
+//        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index()-1, sensor);
 
         sensor.setPosition_x(sensor.getPosition_x()-distance*1);
         sensor.setPosition_y(sensor.getPosition_y()-distance*1);
@@ -119,7 +120,7 @@ public class Main {
     }
 
     public static Sensor goUp(Sensor sensor){
-        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index(), sensor);
+//        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index(), sensor);
 
         sensor.setPosition_y(sensor.getPosition_y()-distance*1);
 
@@ -131,7 +132,7 @@ public class Main {
     }
 
     public static Sensor goRightUp(Sensor sensor){
-        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index() +1, sensor);
+//        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index() +1, sensor);
 
         sensor.setPosition_x(sensor.getPosition_x()+distance*1);
         sensor.setPosition_y(sensor.getPosition_y()-distance*1);
@@ -145,7 +146,7 @@ public class Main {
     }
 
     public static Sensor goLeft(Sensor sensor){
-        field.setSensor(sensor.getRow_index(), sensor.getColumn_index() -1, sensor);
+//        field.setSensor(sensor.getRow_index(), sensor.getColumn_index() -1, sensor);
 
         sensor.setPosition_x(sensor.getPosition_x()-distance*1);
 
@@ -157,7 +158,7 @@ public class Main {
     }
 
     public static Sensor goRight(Sensor sensor){
-        field.setSensor(sensor.getRow_index(), sensor.getColumn_index() +1, sensor);
+//        field.setSensor(sensor.getRow_index(), sensor.getColumn_index() +1, sensor);
 
         sensor.setPosition_x(sensor.getPosition_x()+distance*1);
 
@@ -169,7 +170,7 @@ public class Main {
     }
 
     public static Sensor goLeftDown(Sensor sensor){
-        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index() -1, sensor);
+//        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index() -1, sensor);
 
         sensor.setPosition_x(sensor.getPosition_x()-distance*1);
         sensor.setPosition_y(sensor.getPosition_y()+distance*1);
@@ -183,7 +184,7 @@ public class Main {
     }
 
     public static Sensor goDown(Sensor sensor){
-        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index(), sensor);
+//        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index(), sensor);
 
         sensor.setPosition_y(sensor.getPosition_y()+distance*1);
 
@@ -194,7 +195,7 @@ public class Main {
     }
 
     public static Sensor goRightDown(Sensor sensor){
-        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index()+1, sensor);
+//        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index()+1, sensor);
 
         sensor.setPosition_x(sensor.getPosition_x()+distance*1);
         sensor.setPosition_y(sensor.getPosition_y()+distance*1);
@@ -222,7 +223,7 @@ public class Main {
                 if(target.getPosition_x()<current.getPosition_x()){
                     Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                     sensor.setDirection(1);
-                    current = goLeftUp(current);
+                    goLeftUp(current);
                     frame.repaint();
                     System.out.println("你要走下一步吗");
                     in.next();
@@ -236,7 +237,7 @@ public class Main {
                 if(target.getPosition_x()>current.getPosition_x()){
                     Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                     sensor.setDirection(3);
-                    current = goRightUp(current);
+                    goRightUp(current);
                     frame.repaint();
                     System.out.println("你要走下一步吗");
                     in.next();
@@ -250,7 +251,7 @@ public class Main {
                 if(target.getPosition_x()<current.getPosition_x()){
                     Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                     sensor.setDirection(7);
-                    current = goLeftDown(current);
+                    goLeftDown(current);
                     frame.repaint();
                     System.out.println("你要走下一步吗");
                     in.next();
@@ -264,7 +265,7 @@ public class Main {
                 if(target.getPosition_x()>current.getPosition_x()){
                     Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                     sensor.setDirection(9);
-                    current = goRightDown(current);
+                    goRightDown(current);
                     frame.repaint();
                     System.out.println("你要走下一步吗");
                     in.next();
@@ -280,7 +281,7 @@ public class Main {
                 // 划线
                 Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                 sensor.setDirection(4);
-                current = goLeft(current);
+                goLeft(current);
                 frame.repaint();
                 System.out.println("你要走下一步吗");
                 in.next();
@@ -293,7 +294,7 @@ public class Main {
                 // 划线
                 Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                 sensor.setDirection(6);
-                current = goRight(current);
+                goRight(current);
                 frame.repaint();
                 System.out.println("你要走下一步吗");
                 in.next();
@@ -307,9 +308,12 @@ public class Main {
             if(target.getPosition_y() < current.getPosition_y()){
                 // current Go Up (totalDistance+1)
                 // 划线
-                Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
-                sensor.setDirection(2);
-                current = goUp(current);
+                field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(2);
+                frame.repaint();
+                System.out.println("你要走下一步吗");
+                in.next();
+
+                goUp(current);
                 frame.repaint();
                 System.out.println("你要走下一步吗");
                 in.next();
@@ -322,7 +326,7 @@ public class Main {
                 // 划线
                 Sensor sensor = field.getSensor(current.getRow_index(), current.getColumn_index());
                 sensor.setDirection(8);
-                current = goDown(current);
+                goDown(current);
                 frame.repaint();
                 System.out.println("你要走下一步吗");
                 in.next();

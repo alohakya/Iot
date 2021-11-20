@@ -18,7 +18,7 @@ public class Main {
     private static JFrame frame= new JFrame("传感器遍历最佳路径");
     private static Field field = new Field(8,12);
     static Scanner in = new Scanner(System.in);
-    static boolean nextStep;
+//    static boolean nextStep;
 
 
     public static void main(String[] args){
@@ -52,11 +52,12 @@ public class Main {
         button.setText("下一步");
         button.setFont(new Font("宋体",Font.BOLD,25));
         button.setSize(80,40);
-//        button.setForeground(Color.PINK);
+        button.setForeground(Color.PINK);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                nextStep = true;
+//                nextStep = true;
+                System.out.println("button clicked");
             }
         });
 
@@ -69,9 +70,6 @@ public class Main {
         int count = 0;
         Sensor current;
         Sensor target;
-
-        System.out.println(field.getRow());
-        System.out.println(field.getColumn());
 
         System.out.println("请输入需要遍历的传感器总个数：");
         count = in.nextInt();
@@ -102,39 +100,40 @@ public class Main {
             field.getToBeVisitedSensor().remove(current);
             frame.repaint();
         }
-         while(field.getToBeVisitedSensor().size() > 0){
-//             System.out.println("你要走下一步吗？");
-//             in.next();
-             if(nextStep){
-                 target = field.getToBeVisitedSensor().get(0);
-                 // 找最近的待遍历节点，然后赋值给target
-                 for(Sensor sensor: field.getToBeVisitedSensor()){
-                     double sensor_distance = getDistance(current, sensor);
-                     double target_distance = getDistance(current, target);
-                     if(sensor_distance < target_distance){
-                         target = sensor;
-                     }
-                 }
-                 // 找到了下一个目标节点
-                 // FIND PATH
-                 findPath(current, target);
-                 current = target;
-                 target.Visited();
-                 field.getToBeVisitedSensor().remove(target);
-                 frame.repaint();
-                 nextStep = false;
-             }
-         }
 
-         System.out.println("END");
-         System.out.println("总路程：" + totalDistance);
-         totalTime = totalDistance / speed;
-         System.out.println("总时间：" + totalTime);
+        System.out.println("你要走下一步吗");
+        in.next();
+        while(field.getToBeVisitedSensor().size() > 0){
+            // 确定目标节点
+            target = field.getToBeVisitedSensor().get(0);
+
+            // 找最近的待遍历节点，然后赋值给target
+            for(Sensor sensor: field.getToBeVisitedSensor()) {
+                double sensor_distance = getDistance(current, sensor);
+                double target_distance = getDistance(current, target);
+                if (sensor_distance < target_distance) {
+                    target = sensor;
+                }
+            }
+
+            // 找到了下一个目标节点
+            // 寻找路径
+            findPath(current, target);
+            current = target;
+            target.Visited();
+            field.getToBeVisitedSensor().remove(target);
+            System.out.println("你要走下一步吗");
+            in.next();
+            frame.repaint();
+        }
+
+        System.out.println("END");
+        System.out.println("总路程：" + totalDistance);
+        totalTime = totalDistance / speed;
+        System.out.println("总时间：" + totalTime);
     }
 
     public static Sensor goLeftUp(Sensor sensor){
-//        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index()-1, sensor);
-
         sensor.setPosition_x(sensor.getPosition_x()-distance*1);
         sensor.setPosition_y(sensor.getPosition_y()-distance*1);
 
@@ -146,8 +145,6 @@ public class Main {
     }
 
     public static Sensor goUp(Sensor sensor){
-//        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index(), sensor);
-
         sensor.setPosition_y(sensor.getPosition_y()-distance*1);
 
         sensor.setRow_index(sensor.getRow_index()-1);
@@ -158,8 +155,6 @@ public class Main {
     }
 
     public static Sensor goRightUp(Sensor sensor){
-//        field.setSensor(sensor.getRow_index()-1, sensor.getColumn_index() +1, sensor);
-
         sensor.setPosition_x(sensor.getPosition_x()+distance*1);
         sensor.setPosition_y(sensor.getPosition_y()-distance*1);
 
@@ -172,8 +167,6 @@ public class Main {
     }
 
     public static Sensor goLeft(Sensor sensor){
-//        field.setSensor(sensor.getRow_index(), sensor.getColumn_index() -1, sensor);
-
         sensor.setPosition_x(sensor.getPosition_x()-distance*1);
 
         sensor.setColumn_index(sensor.getColumn_index()-1);
@@ -184,8 +177,6 @@ public class Main {
     }
 
     public static Sensor goRight(Sensor sensor){
-//        field.setSensor(sensor.getRow_index(), sensor.getColumn_index() +1, sensor);
-
         sensor.setPosition_x(sensor.getPosition_x()+distance*1);
 
         sensor.setColumn_index(sensor.getColumn_index()+1);
@@ -196,8 +187,6 @@ public class Main {
     }
 
     public static Sensor goLeftDown(Sensor sensor){
-//        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index() -1, sensor);
-
         sensor.setPosition_x(sensor.getPosition_x()-distance*1);
         sensor.setPosition_y(sensor.getPosition_y()+distance*1);
 
@@ -210,8 +199,6 @@ public class Main {
     }
 
     public static Sensor goDown(Sensor sensor){
-//        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index(), sensor);
-
         sensor.setPosition_y(sensor.getPosition_y()+distance*1);
 
         sensor.setRow_index(sensor.getRow_index()+1);
@@ -221,8 +208,6 @@ public class Main {
     }
 
     public static Sensor goRightDown(Sensor sensor){
-//        field.setSensor(sensor.getRow_index()+1, sensor.getColumn_index()+1, sensor);
-
         sensor.setPosition_x(sensor.getPosition_x()+distance*1);
         sensor.setPosition_y(sensor.getPosition_y()+distance*1);
 
@@ -241,22 +226,20 @@ public class Main {
         }
         // 对角线
         if(x_distance == y_distance){
-
             // 目标节点在左上方
             if(target.getPosition_x()<current.getPosition_x() && target.getPosition_y()<current.getPosition_y()){
                 // current Go LeftUp (totalDistance+g2)
                 // 划线
                 while(target.getPosition_x()<current.getPosition_x()){
                     field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(1);
+                    System.out.println("你要走下一步吗");
+                    in.next();
                     frame.repaint();
-//                    System.out.println("你要走下一步吗");
-//                    in.next();
-                    if(nextStep){
-                        goLeftUp(current);
-                        frame.repaint();
-                        nextStep = false;
-                    }
+
+                    goLeftUp(current);
+
                 }
+                return;
                 // until current.getPosition_x()==target.getPosition_x()
             }
             // 目标节点在右上方
@@ -265,17 +248,14 @@ public class Main {
                 // 划线
                 while(target.getPosition_x()>current.getPosition_x()){
                     field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(3);
+                    System.out.println("你要走下一步吗");
+                    in.next();
                     frame.repaint();
-//                    System.out.println("你要走下一步吗");
-//                    in.next();
-                    if(nextStep){
-                        goRightUp(current);
-                        frame.repaint();
-                        nextStep = false;
-                    }
 
+                    goRightUp(current);
                 }
                 // until current.getPosition_x()==target.getPosition_x()
+                return;
             }
             // 目标节点在左下方
             else if(target.getPosition_x()<current.getPosition_x() && target.getPosition_y()>current.getPosition_y()){
@@ -283,16 +263,13 @@ public class Main {
                 // 划线
                 while(target.getPosition_x()<current.getPosition_x()){
                     field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(7);
+                    System.out.println("你要走下一步吗");
+                    in.next();
                     frame.repaint();
-//                    System.out.println("你要走下一步吗");
-//                    in.next();
-                    if(nextStep){
-                        goLeftDown(current);
-                        frame.repaint();
-                        nextStep = false;
-                    }
+                    goLeftDown(current);
                 }
                 // until current.getPosition_x()==target.getPosition_x()
+                return;
             }
             // 目标节点在右下方
             else{
@@ -300,17 +277,13 @@ public class Main {
                 // 划线
                 while(target.getPosition_x()>current.getPosition_x()){
                     field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(9);
+                    System.out.println("你要走下一步吗");
+                    in.next();
                     frame.repaint();
-//                    System.out.println("你要走下一步吗");
-//                    in.next();
-
-                    if(nextStep){
-                        goRightDown(current);
-                        frame.repaint();
-                        nextStep = false;
-                    }
+                    goRightDown(current);
                 }
                 // until current.getPosition_x()==target.getPosition_x()
+                return;
             }
         }
         // 宽度差大于高度差
@@ -320,15 +293,10 @@ public class Main {
                 // current Go Left (totalDistance+1)
                 // 划线
                 field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(4);
+                System.out.println("你要走下一步吗");
+                in.next();
                 frame.repaint();
-//                System.out.println("你要走下一步吗");
-//                in.next();
-
-                if(nextStep){
-                    goLeft(current);
-                    frame.repaint();
-                    nextStep = false;
-                }
+                goLeft(current);
                 // findPath
                 findPath(current, target);
             }
@@ -337,16 +305,11 @@ public class Main {
                 // current Go Right (totalDistance+1)
                 // 划线
                 field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(6);
+                System.out.println("你要走下一步吗");
+                in.next();
                 frame.repaint();
-//                System.out.println("你要走下一步吗");
-//                in.next();
-
-                if(nextStep){
-                    goRight(current);
-                    frame.repaint();
-                    nextStep = false;
-                }
-                // findPath
+                goRight(current);
+//                 findPath
                 findPath(current, target);
             }
         }
@@ -357,15 +320,11 @@ public class Main {
                 // current Go Up (totalDistance+1)
                 // 划线
                 field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(2);
+                System.out.println("你要走下一步吗");
+                in.next();
                 frame.repaint();
-//                System.out.println("你要走下一步吗");
-//                in.next();
+                goUp(current);
 
-                if(nextStep){
-                    goUp(current);
-                    frame.repaint();
-                    nextStep = false;
-                }
                 // findPath
                 findPath(current, target);
             }
@@ -374,15 +333,10 @@ public class Main {
                 // current Go Down (totalDistance+1)
                 // 划线
                 field.getSensor(current.getRow_index(), current.getColumn_index()).setDirection(8);
+                System.out.println("你要走下一步吗");
+                in.next();
                 frame.repaint();
-//                System.out.println("你要走下一步吗");
-//                in.next();
-
-                if(nextStep){
-                    goDown(current);
-                    frame.repaint();
-                    nextStep = false;
-                }
+                goDown(current);
                 // findPath
                 findPath(current, target);
             }

@@ -8,7 +8,6 @@ import java.awt.*;
  * @Date View 17:06
  **/
 
-
 public class View extends JPanel {
     private static final long serialVersionUID = -525899676212660595L;
     private static final int GRID_SIZE = 42;

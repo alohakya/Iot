@@ -25,21 +25,10 @@ public class Sensor {
     // Down = 8;
     // RightDown = 9;
 
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
     public Sensor(){
         state = "Normal";
         direction = 5;
 
-    }
-    public String getState(){
-        return state;
     }
 
     public void toBeVisited(){
